@@ -1,15 +1,21 @@
 when:
   - event: push
   - event: pull_request
-  
+
 steps:
   - name: test-and-codecov
     image: python:3.12-slim
+    environment:
+      CODECOV_TOKEN:
+        from_secret: codecov_token
     commands:
       - pip install -r requirements.txt
       - pip install codecov-cli
       - python -m pytest -v --cov=app --cov-report=xml
-      - codecovcli upload-process
+      - codecovcli upload-process --git-service github --disable-search --fail-on-error -f coverage.xml
+
+    when:
+      - event: push
 
   - name: verify
     image: python:3.12-slim
