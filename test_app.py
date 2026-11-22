@@ -1,7 +1,6 @@
 
 import pytest
 from app import add, subtract, multiply, divide
-#making a push trigger
 
 def test_add():
     assert add(10, 5) == 15
