@@ -13,6 +13,14 @@ steps:
       - pip install codecov-cli
       - python -m pytest -v --cov=app --cov-report=xml
       - codecovcli upload-process --git-service github --disable-search --fail-on-error -f coverage.xml
+  
+  - name: docker-build
+    image: woodpeckerci/plugin-kaniko:2.3.5
+    settings:
+      dockerfile: Dockerfile
+      repo: devops-calculator
+      tags: ci
+      dry-run: true
 
     when:
       - event: push
